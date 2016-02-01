@@ -297,4 +297,154 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
         }
 
     }
+
+
+
+    [Serializable]
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.ComponentModel.DesignerCategory("code")]
+    [XmlType(Namespace = "http://schemas.openxmlformats.org/spreadsheetml/2006/main")]
+    public class CT_Checkbox
+    {
+
+        private string nameField;
+
+        private string shapeIdField;
+
+        private CT_Anchor anchorField;
+
+        private string ctrlPropRelIdField;
+
+
+        public static CT_Checkbox Parse(XmlNode node, XmlNamespaceManager namespaceManager)
+        {
+            return null;
+        }
+
+
+
+        internal void Write(StreamWriter sw, string nodeName)
+        {
+            sw.Write("<mc:AlternateContent xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\">" +
+                        "<mc:Choice Requires=\"x14\">");
+
+           
+            
+            sw.Write(string.Format("<control shapeId=\"{0}\" r:id=\"{1}\" name=\"{2}\">", shapeId, ctrlPropRelId, name));
+            sw.Write("<controlPr defaultSize=\"0\" autoFill=\"0\" autoLine=\"0\" autoPict=\"0\">");
+            if (this.anchor != null)
+                this.anchor.Write(sw);
+
+            sw.Write("</controlPr>" +
+                "</control>" +
+              "</mc:Choice>" +
+            "</mc:AlternateContent>");
+        }
+
+        [XmlElement]
+        public CT_Anchor anchor
+        {
+            get
+            {
+                return this.anchorField;
+            }
+            set
+            {
+                this.anchorField = value;
+            }
+        }
+
+        public string name
+        {
+            get
+            {
+                return this.nameField;
+            }
+            set
+            {
+                this.nameField = value;
+            }
+        }
+
+        public string shapeId
+        {
+            get
+            {
+                return this.shapeIdField;
+            }
+            set
+            {
+                this.shapeIdField = value;
+            }
+        }
+
+        public string ctrlPropRelId
+        {
+            get
+            {
+                return this.ctrlPropRelIdField;
+            }
+            set
+            {
+                this.ctrlPropRelIdField = value;
+            }
+        }
+        
+    }
+
+
+    [Serializable]
+    [System.Diagnostics.DebuggerStepThrough]
+    [System.ComponentModel.DesignerCategory("code")]
+    [XmlType(Namespace = "http://schemas.openxmlformats.org/spreadsheetml/2006/main")]
+    public class CT_CheckboxList
+    {
+        private List<CT_Checkbox> checkboxField = new List<CT_Checkbox>(); // 0..*
+
+        public CT_CheckboxList Copy()
+        {
+            CT_CheckboxList obj = new CT_CheckboxList();
+            obj.checkbox = new List<CT_Checkbox>(this.checkbox);
+            return obj;
+        }
+
+        //[XmlArray(Order = 0)]
+        [XmlElement]
+        public List<CT_Checkbox> checkbox
+        {
+            get
+            {
+                return this.checkboxField;
+            }
+            set
+            {
+                this.checkboxField = value;
+            }
+        }
+
+        public static CT_CheckboxList Parse(XmlNode node, XmlNamespaceManager namespaceManager)
+        {
+            return null;
+        }
+
+
+
+        internal void Write(StreamWriter sw, string nodeName)
+        {
+            sw.Write("<mc:AlternateContent xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\">" +
+                        "<mc:Choice Requires=\"x14\">" +
+                            "<controls>");
+            if (this.checkbox != null)
+            {
+                foreach (CT_Checkbox x in this.checkbox)
+                {
+                    x.Write(sw, "checkbox");
+                }
+            }
+            sw.Write("</controls>" +
+                "</mc:Choice>" +
+             "</mc:AlternateContent>");
+        }
+
+    }
 }

@@ -636,7 +636,9 @@ namespace NPOI.OpenXmlFormats.Vml
         private string equationxmlField;
 
         private string idField;
+        private ST_TrueFalse filledField;
         private string fillcolorField;
+        private string strokecolorField;
         private ST_InsetMode insetmodeField;
 
         private ST_TrueFalse strokedField;
@@ -713,7 +715,9 @@ namespace NPOI.OpenXmlFormats.Vml
             NPOI.OpenXmlFormats.Util.XmlHelper.WriteAttribute(sw, "stroked", this.stroked);
             XmlHelper.WriteAttribute(sw, "o:spid", this.spid);
             XmlHelper.WriteAttribute(sw, "id", this.id);
+            NPOI.OpenXmlFormats.Util.XmlHelper.WriteAttribute(sw, "filled", this.filled);
             XmlHelper.WriteAttribute(sw, "fillcolor", this.fillcolor);
+            XmlHelper.WriteAttribute(sw, "strokecolor", this.strokecolor);
             XmlHelper.WriteAttribute(sw, "o:insetmode", this.insetmode.ToString());
             XmlHelper.WriteAttribute(sw, "type", this.type);
             XmlHelper.WriteAttribute(sw, "adj", this.adj);
@@ -805,10 +809,24 @@ namespace NPOI.OpenXmlFormats.Vml
         }
 
         [XmlAttribute]
+        [DefaultValue(ST_TrueFalse.t)]
+        public ST_TrueFalse filled
+        {
+            get { return filledField; }
+            set { filledField = value; }
+        }
+        [XmlAttribute]
         public string fillcolor
         {
             get { return fillcolorField; }
             set { fillcolorField = value; }
+        }
+
+        [XmlAttribute]
+        public string strokecolor
+        {
+            get { return strokecolorField; }
+            set { strokecolorField = value; }
         }
 
         [XmlAttribute(Namespace = "urn:schemas-microsoft-com:office:office")]

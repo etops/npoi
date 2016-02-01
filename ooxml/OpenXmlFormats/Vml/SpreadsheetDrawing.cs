@@ -152,6 +152,12 @@ namespace NPOI.OpenXmlFormats.Vml.Spreadsheet
                 sw.Write(string.Format("<x:Anchor>{0}</x:Anchor>", this.anchor));
             if (this.autoFill != ST_TrueFalseBlank.NONE)
                 sw.Write(string.Format("<x:AutoFill>{0}</x:AutoFill>", this.autoFill));
+            if (this.autoLine != ST_TrueFalseBlank.NONE)
+                sw.Write(string.Format("<x:AutoLine>{0}</x:AutoLine>", this.autoFill));
+            if (this.textVAlign != null)
+                sw.Write(string.Format("<x:TextVAlign>{0}</x:TextVAlign>", this.textVAlign));
+            if (this.fmlaLink != null)
+                sw.Write(string.Format("<x:FmlaLink>{0}</x:FmlaLink>", this.fmlaLink));
             if (this.visible != ST_TrueFalseBlank.NONE)
                 sw.Write(string.Format("<x:Visible>{0}</x:Visible>", this.visible));
             if (this.row != null)
@@ -216,6 +222,22 @@ namespace NPOI.OpenXmlFormats.Vml.Spreadsheet
             this.autoFillFieldSpecified = true;
         }
 
+        public void AddNewAutoLine(ST_TrueFalseBlank value)
+        {
+            this.autoLineField = value;
+        }
+
+        public void AddNewTextVAlign(string value)
+        {
+            this.textVAlignField = value;
+        }
+
+        private string fmlaLinkField;
+        public void AddNewFmlaLink(string value)
+        {
+            this.fmlaLinkField = value;
+        }
+
         ST_TrueFalseBlank autoFillField = ST_TrueFalseBlank.NONE;
         bool autoFillFieldSpecified = false;
 
@@ -231,6 +253,34 @@ namespace NPOI.OpenXmlFormats.Vml.Spreadsheet
         {
             get { return this.autoFillFieldSpecified; }
             set { this.autoFillFieldSpecified = value; }
+        }
+
+        ST_TrueFalseBlank autoLineField = ST_TrueFalseBlank.NONE;
+
+        [XmlElement(ElementName = "AutoLine")]
+        [DefaultValue(ST_TrueFalseBlank.NONE)]
+        public ST_TrueFalseBlank autoLine
+        {
+            get { return this.autoLineField; }
+            set { this.autoLineField = value; }
+        }
+
+        string textVAlignField = null;
+
+        [XmlElement(ElementName = "TextVAlign")]
+        [DefaultValue(null)]
+        public string textVAlign
+        {
+            get { return this.textVAlignField; }
+            set { this.textVAlignField = value; }
+        }
+
+        [XmlElement(ElementName = "FmlaLink")]
+        [DefaultValue(null)]
+        public string fmlaLink
+        {
+            get { return this.fmlaLinkField; }
+            set { this.fmlaLinkField = value; }
         }
 
         ST_TrueFalseBlank visibleField = ST_TrueFalseBlank.NONE;

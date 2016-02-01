@@ -1468,7 +1468,21 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
                 sw.Write("<xdr:wsDr xmlns:xdr=\"http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\">");
                 foreach (IEG_Anchor anchor in this.cellAnchors)
                 {
-                    anchor.Write(sw);
+                    if (anchor.isAlternateContentChoice)
+                    {
+                        sw.Write("<mc:AlternateContent xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\">" +
+                                       "<mc:Choice xmlns:a14=\"http://schemas.microsoft.com/office/drawing/2010/main\" Requires=\"a14\">");
+                        anchor.Write(sw);
+
+                        sw.Write("</mc:Choice>" +
+                                "<mc:Fallback/>" +
+                              "</mc:AlternateContent>");
+                    }
+                    else
+                    {
+                        anchor.Write(sw);
+                    }
+                    
                 }
                 sw.Write("</xdr:wsDr>");
             }
@@ -1621,6 +1635,11 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
             get { return pictureField; }
             set { pictureField = value; }
         }
+        public bool isAlternateContentChoice
+        {
+            get { return false; }
+            set { }
+        }
          
         public void Write(StreamWriter sw)
         {
@@ -1693,6 +1712,7 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
         CT_GroupShape groupShape { get; set; }
         CT_AnchorClientData clientData { get; set; }
         void Write(StreamWriter sw);
+        bool isAlternateContentChoice { get; set; }
     }
     public class CT_AbsoluteCellAnchor : IEG_Anchor
     {
@@ -1803,10 +1823,15 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
             get { return pictureField; }
             set { pictureField = value; }
         }
+        public bool isAlternateContentChoice
+        {
+            get { return false; }
+            set { }
+        }
         public void Write(StreamWriter sw)
         {
             sw.Write("<xdr:absCellAnchor>");
-            if (this.pos!=null)
+            if (this.pos != null)
                 this.pos.Write(sw, "pos");
             if (this.sp != null)
                 sp.Write(sw, "sp");
@@ -1841,6 +1866,8 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
         private CT_Picture pictureField = null;
 
         private CT_AnchorClientData clientDataField = null; // 1..1 element
+
+        private bool isAlternateContentChoiceField = false;
 
         private ST_EditAs editAsField = ST_EditAs.NONE; // 0..1 attribute
 
@@ -1877,6 +1904,12 @@ namespace NPOI.OpenXmlFormats.Dml.Spreadsheet
         {
             pictureField = new CT_Picture();
             return pictureField;
+        }
+
+        public bool isAlternateContentChoice
+        {
+            get { return isAlternateContentChoiceField; }
+            set { isAlternateContentChoiceField = value; }
         }
 
         public CT_AnchorClientData AddNewClientData()

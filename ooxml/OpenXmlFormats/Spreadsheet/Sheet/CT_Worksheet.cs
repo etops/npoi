@@ -92,6 +92,8 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
 
         private CT_ExtensionList extLstField = null;
 
+        private CT_CheckboxList checkboxLstField = null;
+
         public static CT_Worksheet Parse(XmlNode node, XmlNamespaceManager namespaceManager)
         {
             if (node == null)
@@ -188,7 +190,10 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
             using (StreamWriter sw = new StreamWriter(stream))
             {
                 sw.Write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
-                sw.Write("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\">");
+                sw.Write("<worksheet xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"");
+                if (this.checkboxLst != null)
+                    sw.Write(" xmlns:xdr=\"http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing\" xmlns:x14=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/main\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" mc:Ignorable=\"x14ac\" xmlns:x14ac=\"http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac\"");
+                sw.Write(">");
                 if (this.sheetPr != null)
                     this.sheetPr.Write(sw, "sheetPr");
                 if (this.dimension != null)
@@ -275,6 +280,8 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
                     this.tableParts.Write(sw, "tableParts");
                 if (this.extLst != null)
                     this.extLst.Write(sw, "extLst");
+                if (this.checkboxLst != null)
+                    this.checkboxLst.Write(sw,"AlternateContent");
                 sw.Write("</worksheet>");
             }
         }
@@ -307,6 +314,17 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
         {
             this.colBreaksField = new CT_PageBreak();
             return this.colBreaksField;
+        }
+        public CT_Checkbox AddNewCheckbox()
+        {
+            if (this.checkboxLstField == null)
+            {
+                this.checkboxLstField = new CT_CheckboxList();
+                this.checkboxLstField.checkbox = new List<CT_Checkbox>();
+            }
+            var checkbox = new CT_Checkbox();
+            this.checkboxLstField.checkbox.Add(checkbox);
+            return checkbox;
         }
         public bool IsSetSheetFormatPr()
         {
@@ -981,6 +999,19 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
             set
             {
                 this.extLstField = value;
+            }
+        }
+
+        [XmlElement]
+        public CT_CheckboxList checkboxLst
+        {
+            get
+            {
+                return this.checkboxLstField;
+            }
+            set
+            {
+                this.checkboxLstField = value;
             }
         }
 

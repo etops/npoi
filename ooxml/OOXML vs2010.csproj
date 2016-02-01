@@ -218,11 +218,14 @@
     <Compile Include="XSSF\UserModel\XSSFShapeGroup.cs" />
     <Compile Include="XSSF\UserModel\XSSFSheet.cs" />
     <Compile Include="XSSF\UserModel\XSSFSheetConditionalFormatting.cs" />
+    <Compile Include="XSSF\UserModel\XSSFCheckboxShape.cs" />
     <Compile Include="XSSF\UserModel\XSSFSimpleShape.cs" />
     <Compile Include="XSSF\UserModel\XSSFTable.cs" />
+    <Compile Include="XSSF\UserModel\XSSFCheckBox.cs" />
     <Compile Include="XSSF\UserModel\XSSFTextBox.cs" />
     <Compile Include="XSSF\UserModel\XSSFTextParagraph.cs" />
     <Compile Include="XSSF\UserModel\XSSFTextRun.cs" />
+    <Compile Include="XSSF\UserModel\XSSFCtrlProp.cs" />
     <Compile Include="XSSF\UserModel\XSSFVMLDrawing.cs" />
     <Compile Include="XSSF\UserModel\XSSFWorkbook.cs" />
     <Compile Include="XSSF\Util\CTColComparator.cs" />

@@ -490,6 +490,14 @@ namespace NPOI.XSSF.UserModel
             return drawing;
         }
 
+
+        internal XSSFCtrlProp AddCtrlProp()
+        {
+            int ctrlPropNumber = GetPackagePart().Package.GetPartsByContentType(XSSFRelation.CONTROL_PROPERTIES.ContentType).Count + 1;
+            XSSFCtrlProp ctrlProp = (XSSFCtrlProp)CreateRelationship(XSSFRelation.CONTROL_PROPERTIES, XSSFFactory.GetInstance(), ctrlPropNumber);
+            return ctrlProp;
+        }
+
         protected virtual NPOI.OpenXmlFormats.Spreadsheet.CT_Drawing GetCTDrawing()
         {
             return worksheet.drawing;
@@ -497,6 +505,13 @@ namespace NPOI.XSSF.UserModel
         protected virtual NPOI.OpenXmlFormats.Spreadsheet.CT_LegacyDrawing GetCTLegacyDrawing()
         {
             return worksheet.legacyDrawing;
+        }
+
+
+        internal CT_Checkbox AddNewCheckbox()
+        {
+            CT_Checkbox checkbox = worksheet.AddNewCheckbox();
+            return checkbox;
         }
 
         /**

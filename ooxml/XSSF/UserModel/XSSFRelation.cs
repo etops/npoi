@@ -138,6 +138,13 @@ namespace NPOI.XSSF.UserModel
                 typeof(XSSFTable)
         );
 
+        public static XSSFRelation CONTROL_PROPERTIES = new XSSFRelation(
+            "application/vnd.ms-excel.controlproperties+xml",
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/ctrlProp",
+            "/xl/ctrlProps/ctrlProp#.xml",
+            typeof(XSSFCtrlProp)
+        );
+
         public static XSSFRelation IMAGES = new XSSFRelation(
                 null,
                 PackageRelationshipTypes.IMAGE_PART,

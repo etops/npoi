@@ -128,6 +128,86 @@ namespace NPOI.XSSF.UserModel
 
         }
 
+        public XSSFCheckBox CreateCheckbox(IClientAnchor anchor)
+        {
+            // create drawing
+            anchor.AnchorType = AnchorType.MoveDontResize;
+            
+            
+            long shapeId = newShapeId();
+            CT_TwoCellAnchor ctAnchor = CreateTwoCellAnchor(anchor);
+            ctAnchor.isAlternateContentChoice = true;
+            CT_Shape ctShape = ctAnchor.AddNewSp();
+            ctShape.Set(XSSFCheckboxShape.GetPrototype());
+            ctShape.nvSpPr.cNvPr.id = (uint)shapeId;
+            ctShape.nvSpPr.cNvPr.extLst = new CT_OfficeArtExtensionList
+            {
+                ext = new List<CT_OfficeArtExtension>
+                    {
+                        new CT_OfficeArtExtension{
+                            uri = "{63B3BB69-23CF-44E3-9099-C40C66FF867C}",
+                            Any = "<a14:compatExt spid=\"_x0000_s" + shapeId + "\"/>",
+                        },
+                    },
+            };
+            ctShape.nvSpPr.cNvPr.name = "Checkbox " + shapeId;
+
+            // create vmlDrawing
+            XSSFClientAnchor ca = (XSSFClientAnchor)anchor;
+            XSSFSheet sheet = (XSSFSheet)GetParent();
+            XSSFVMLDrawing vml = sheet.GetVMLDrawing(true);
+            NPOI.OpenXmlFormats.Vml.CT_Shape vmlShape = vml.newCheckboxShape();
+            if (ca.IsSet())
+            {
+                // convert offsets from emus to pixels since we get a DrawingML-anchor
+                // but create a VML Drawing
+                int dx1Pixels = ca.Dx1 / Units.EMU_PER_PIXEL;
+                int dy1Pixels = ca.Dy1 / Units.EMU_PER_PIXEL;
+                int dx2Pixels = ca.Dx2 / Units.EMU_PER_PIXEL;
+                int dy2Pixels = ca.Dy2 / Units.EMU_PER_PIXEL;
+                String position =
+                        ca.Col1 + ", " + dx1Pixels + ", " +
+                        ca.Row1 + ", " + dy1Pixels + ", " +
+                        ca.Col2 + ", " + dx2Pixels + ", " +
+                        ca.Row2 + ", " + dy2Pixels;
+                vmlShape.GetClientDataArray(0).SetAnchorArray(0, position);
+            }
+            String ref1 = new CellReference(ca.Row1, ca.Col1).FormatAsString();
+
+            XSSFCtrlProp ctrlProp = sheet.AddCtrlProp();
+
+            XSSFCheckBox shape = new XSSFCheckBox(this, ctShape, vmlShape, ctrlProp);
+            shape.anchor = (XSSFClientAnchor)anchor;
+            shape.SetText("Checkbox");
+
+            // create sheet
+            NPOI.OpenXmlFormats.Spreadsheet.CT_Checkbox checkbox = sheet.AddNewCheckbox();
+            checkbox.name = "Check Box " + shapeId;
+            checkbox.shapeId = shapeId.ToString();
+            String relId = ctrlProp.GetPackageRelationship().Id;
+            checkbox.ctrlPropRelId = relId;
+            checkbox.anchor = new OpenXmlFormats.Spreadsheet.CT_Anchor
+            {
+                from = new CT_Marker
+                {
+                    col = anchor.Col1,
+                    colOff = 100000,
+                    row = anchor.Row1,
+                    rowOff = 300000,
+                },
+                to = new CT_Marker
+                {
+                    col = anchor.Col1,
+                    colOff = 130000,
+                    row = anchor.Row1,
+                    rowOff = 500000,
+                }
+            };
+            
+
+            return shape;
+        }
+
         /**
          * Creates a picture.
          *

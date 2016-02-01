@@ -270,6 +270,77 @@ namespace NPOI.XSSF.UserModel
             return shape;
         }
 
+
+        internal CT_Shape newCheckboxShape()
+        {
+            int checkboxShapeType = 201;
+            // correct layout and shape type
+            foreach (Object item in _items)
+            {
+                if (item.GetType() == typeof(CT_ShapeLayout))
+                {
+                    CT_ShapeLayout layout = (CT_ShapeLayout)item;
+                }
+                else if (item.GetType() == typeof(CT_Shapetype))
+                {
+                    CT_Shapetype shapetype = (CT_Shapetype)item;
+                    shapetype.id = "_x0000_t" + checkboxShapeType;
+                    shapetype.coordsize = "21600,21600";
+                    shapetype.spt = checkboxShapeType;
+                    shapetype.path2 = ("m,l,21600r21600,l21600,xe");
+                    shapetype.stroke.joinstyle = ST_StrokeJoinStyle.miter;
+                    shapetype.path = null;
+                    CT_Path path = shapetype.AddNewPath();
+                    path.shadowok = OpenXmlFormats.Vml.ST_TrueFalse.f;
+                    path.extrusionok = OpenXmlFormats.Vml.ST_TrueFalse.f;
+                    path.strokeok = OpenXmlFormats.Vml.ST_TrueFalse.f;
+                    path.fillok = OpenXmlFormats.Vml.ST_TrueFalse.f;
+                    path.connecttype = ST_ConnectType.rect;
+                    
+                    CT_Lock ctlock = shapetype.AddNewLock();
+                    ctlock.ext = ST_Ext.edit;
+                    ctlock.shapetype = OpenXmlFormats.Vml.Office.ST_TrueFalse.t;
+                }
+            }
+
+            // actual checkbox
+            CT_Shape shape = new CT_Shape();
+
+            shape.id = "_x0000_s" + (++_shapeId);
+            shape.type = "#_x0000_t" + checkboxShapeType;
+            shape.style = "position:absolute;margin-left:202.5pt;margin-top:169.5pt;width:87.75pt;height:19.5pt;z-index:1;mso-wrap-style:tight";
+            shape.fill = null;
+            shape.filled = OpenXmlFormats.Vml.ST_TrueFalse.f;
+            shape.fillcolor = ("window [65]");
+            shape.stroked = OpenXmlFormats.Vml.ST_TrueFalse.f;
+            shape.strokecolor = "windowText [64]";
+            
+            
+            shape.insetmode = (ST_InsetMode.auto);
+            shape.textbox = new CT_Textbox();
+            shape.textbox.ItemXml = "<div style='text-align:left'>" +
+                                        "<font face=\"Segoe UI\" size=\"160\" color=\"auto\">" +
+                                          "Kontrollkästchen 1" +
+                                        "</font>" +
+                                    "</div>";
+
+            shape.@lock = new CT_Lock();
+            shape.@lock.ext = ST_Ext.edit;
+            shape.@lock.rotation = OpenXmlFormats.Vml.Office.ST_TrueFalse.t;
+
+
+            CT_ClientData cldata = shape.AddNewClientData();
+            cldata.ObjectType = ST_ObjectType.Checkbox;
+            cldata.AddNewSizeWithCells();
+            cldata.AddNewAnchor("1, 15, 0, 2, 3, 15, 3, 16");
+            cldata.AddNewAutoFill(ST_TrueFalseBlank.@false);
+            cldata.AddNewAutoLine(ST_TrueFalseBlank.@false);
+            cldata.AddNewTextVAlign("Center");
+            _items.Add(shape);
+
+            return shape;
+        }
+
         /**
          * Find a shape with ClientData of type "NOTE" and the specified row and column
          *

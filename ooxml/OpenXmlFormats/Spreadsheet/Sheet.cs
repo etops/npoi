@@ -17,6 +17,7 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
     using System.Xml;
     using NPOI.OpenXml4Net.Util;
     using NPOI.OpenXml4Net.OPC;
+    using NPOI.OpenXmlFormats.Dml.Spreadsheet;
 
     public enum ST_SmartTagShow
     {
@@ -11263,6 +11264,47 @@ namespace NPOI.OpenXmlFormats.Spreadsheet
             {
                 this.controlField = value;
             }
+        }
+    }
+
+
+
+
+    [Serializable]
+    [XmlType(Namespace = "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing")]
+    public class CT_Anchor
+    {
+        private CT_Marker fromField = new CT_Marker(); // 1..1 element
+        private CT_Marker toField = new CT_Marker(); // 1..1 element
+
+        [XmlElement]
+        public CT_Marker from
+        {
+            get { return fromField; }
+            set { fromField = value; }
+        }
+
+        [XmlElement]
+        public CT_Marker to
+        {
+            get { return toField; }
+            set { toField = value; }
+        }
+
+
+        public void Write(StreamWriter sw)
+        {
+            sw.Write("<anchor moveWithCells=\"1\"");
+            sw.Write(">");
+            this.from.Write(sw, "from");
+            this.to.Write(sw, "to");
+            sw.Write("</anchor>");
+        }
+
+        internal static CT_Anchor Parse(XmlNode node, XmlNamespaceManager namespaceManager)
+        {
+            
+            return null;
         }
     }
 }
